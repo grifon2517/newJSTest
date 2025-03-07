@@ -1,11 +1,28 @@
 .App {
-	max-width: 1280px;
-	margin:  auto;
-	padding: 2rem;
-	text-align: center;
+	font-family: Arial, sans-serif;
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: #f9f9f9;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-}
+  .toDoItem {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	margin: 10px 0;
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
 
-.errorLabel {
-	color: red;
-}
+  .toDoItem input {
+	margin-right: 10px;
+  }
+
+  .toDoItem.completed {
+	opacity: 0.6;
+	text-decoration: line-through;
+  }
