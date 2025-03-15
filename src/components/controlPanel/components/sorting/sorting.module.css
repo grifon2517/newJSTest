@@ -1,0 +1,15 @@
+.checkbox {
+	height: 25px;
+	width: 25px;
+	}
+
+.sortingButton	{
+	margin-right: 10px;
+	width: 30px;
+    height: 30px;
+ display: flex; /* Включаем Flexbox */
+  justify-content: center; /* Горизонтальное выравнивание */
+  align-items: center; /* Вертикальное выравнивание */
+  font-size: 20px
+
+}

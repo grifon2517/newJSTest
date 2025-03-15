@@ -1,0 +1,10 @@
+.Button {
+    width: 30px;
+    height: 30px;
+ display: flex; /* Включаем Flexbox */
+  justify-content: center; /* Горизонтальное выравнивание */
+  align-items: center; /* Вертикальное выравнивание */
+  font-size: 15px
+
+
+}
