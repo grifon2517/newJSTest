@@ -17,7 +17,7 @@ export const Todo = ({
 			<input
 				className={styles.checkbox}
 				type="checkbox"
-				checked={completed}
+				checked={completed === 'true' || completed === true}
 				onChange={({ target }) => onCompletedChange(target.checked)}
 			/>
 
@@ -45,8 +45,8 @@ export const Todo = ({
 };
 
 Todo.propTypes = {
-	id: PropTypes.number.isRequired, // id должен быть числом и обязательным
-	title: PropTypes.string.isRequired, // title должен быть строкой и обязательным
+	id: PropTypes.string.isRequired,
+	title: PropTypes.string.isRequired,
 	completed: PropTypes.bool.isRequired,
 	onSave: PropTypes.func,
 	onEdit: PropTypes.func,

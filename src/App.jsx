@@ -25,16 +25,16 @@ export const App = () => {
 	const onTodoSave = (todoId) => {
 		const { title, completed } = findTodo(toDo, todoId) || {};
 		if (todoId === NEW_TODO_ID) {
-			createTodo({ title, completed }).then((todo) => {
+			createTodo({ title, completed }).then((id) => {
 				let updatedTodo = setToDoInTodos(toDo, { id: NEW_TODO_ID, isEditing: false });
 
 				updatedTodo = removeTodoInTodos(updatedTodo, NEW_TODO_ID);
-				updatedTodo = addTodoInTodos(updatedTodo, todo);
+				updatedTodo = addTodoInTodos(updatedTodo, { id, title, completed });
 
 				setToDo(updatedTodo);
 			});
 		} else {
-			updateTodo({ id: todoId, title }).then(() => {
+			updateTodo({ id: todoId, title, completed }).then(() => {
 				setToDo(setToDoInTodos(toDo, { id: todoId, isEditing: false }));
 			});
 		}
@@ -52,7 +52,9 @@ export const App = () => {
 		setToDo(setToDoInTodos(toDo, { id, title: newTitile }));
 	};
 	const onTodoCompletedChange = (id, newCompleted) => {
-		updateTodo({ id, completed: newCompleted }).then(() => {
+		const { title } = findTodo(toDo, id) || {};
+
+		updateTodo({ id, title, completed: newCompleted }).then(() => {
 			setToDo(setToDoInTodos(toDo, { id, completed: newCompleted }));
 		});
 	};
@@ -74,7 +76,7 @@ export const App = () => {
 						key={id}
 						id={id}
 						title={title}
-						completed={completed}
+						completed={completed === 'true' || completed === true}
 						onSave={() => onTodoSave(id)}
 						onEdit={() => onTodoEdit(id)}
 						onRemove={() => onTodoRemove(id)}
