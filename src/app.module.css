@@ -9,3 +9,7 @@
 .errorLabel {
 	color: red;
 }
+
+:global .active {
+	text-decoration: none;
+}
