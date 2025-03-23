@@ -1,15 +1,15 @@
-import styles from './todo.module.css';
-import PropTypes from 'prop-types';
 import { Button } from '../button/button';
+import PropTypes from 'prop-types';
+import styles from './todo.module.css';
 
-export const Todo = ({
+export const Task = ({
 	title,
 	completed,
 	onSave,
 	onEdit,
 	onRemove,
 	isEditing,
-	onTitileChange,
+	onTitleChange,
 	onCompletedChange,
 }) => {
 	return (
@@ -26,12 +26,11 @@ export const Todo = ({
 					<input
 						value={title}
 						type="text"
-						onChange={({ target }) => onTitileChange(target.value)}
+						onChange={({ target }) => onTitleChange(target.value)}
 					/>
 				) : (
 					<div onClick={onEdit}>{title}</div>
 				)}
-				<></>
 			</div>
 			<div>
 				{isEditing ? (
@@ -44,14 +43,13 @@ export const Todo = ({
 	);
 };
 
-Todo.propTypes = {
-	id: PropTypes.number.isRequired, // id должен быть числом и обязательным
-	title: PropTypes.string.isRequired, // title должен быть строкой и обязательным
+Task.propTypes = {
+	title: PropTypes.string.isRequired,
 	completed: PropTypes.bool.isRequired,
 	onSave: PropTypes.func,
 	onEdit: PropTypes.func,
 	onRemove: PropTypes.func,
 	isEditing: PropTypes.bool,
-	onTitileChange: PropTypes.func,
+	onTitleChange: PropTypes.func,
 	onCompletedChange: PropTypes.func,
 };

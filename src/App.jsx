@@ -1,91 +1,111 @@
-// import ReactLogo from './assets/react.svg?react';
-// import viteLogo from '/vite.svg';
-import styles from './app.module.css';
-import { Todo } from './components/main';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { ControlPanel } from './components/main';
+import { MainPage, TaskPage } from './components/Routes';
 import { createTodo, readTodos, updateTodo, deleteTodo } from './api/api';
-import {
-	addTodoInTodos,
-	removeTodoInTodos,
-	setToDoInTodos,
-	findTodo,
-} from './components/utils/main';
-import { NEW_TODO_ID } from './components/constants/new-todo-id';
+import styles from './app.module.css';
 
 export const App = () => {
 	const [toDo, setToDo] = useState([]);
 	const [searchPhrase, setSearchPhrase] = useState('');
 	const [isAlphabetSorting, setIsAlphabetSorting] = useState(false);
+	const navigate = useNavigate();
 
+	// Добавление новой задачи
 	const onTodoAdd = () => {
-		setToDo(addTodoInTodos(toDo));
+		const newTodo = { title: 'Новая задача', completed: false };
+		createTodo(newTodo).then((savedTodo) => {
+			setToDo([...toDo, savedTodo]);
+			navigate(`/task/${savedTodo.id}`);
+		});
 	};
 
+	// Сохранение задачи
 	const onTodoSave = (todoId) => {
-		const { title, completed } = findTodo(toDo, todoId) || {};
-		if (todoId === NEW_TODO_ID) {
-			createTodo({ title, completed }).then((todo) => {
-				let updatedTodo = setToDoInTodos(toDo, { id: NEW_TODO_ID, isEditing: false });
-
-				updatedTodo = removeTodoInTodos(updatedTodo, NEW_TODO_ID);
-				updatedTodo = addTodoInTodos(updatedTodo, todo);
-
-				setToDo(updatedTodo);
-			});
-		} else {
-			updateTodo({ id: todoId, title }).then(() => {
-				setToDo(setToDoInTodos(toDo, { id: todoId, isEditing: false }));
+		const task = toDo.find((task) => task.id === todoId);
+		if (task) {
+			updateTodo({ id: todoId, title: task.title, completed: task.completed }).then(() => {
+				setToDo(toDo.map((t) => (t.id === todoId ? { ...t, isEditing: false } : t)));
 			});
 		}
 	};
 
+	// Редактирование задачи
 	const onTodoEdit = (id) => {
-		setToDo(setToDoInTodos(toDo, { id, isEditing: true }));
+		setToDo(toDo.map((t) => (t.id === id ? { ...t, isEditing: true } : t)));
 	};
 
+	// Удаление задачи
 	const onTodoRemove = (id) => {
-		deleteTodo(id).then(() => setToDo(removeTodoInTodos(toDo, id)));
-	};
-
-	const onTodoTitileChange = (id, newTitile) => {
-		setToDo(setToDoInTodos(toDo, { id, title: newTitile }));
-	};
-	const onTodoCompletedChange = (id, newCompleted) => {
-		updateTodo({ id, completed: newCompleted }).then(() => {
-			setToDo(setToDoInTodos(toDo, { id, completed: newCompleted }));
+		deleteTodo(id).then(() => {
+			setToDo(toDo.filter((t) => t.id !== id));
+			navigate('/');
 		});
 	};
 
+	// Изменение заголовка задачи
+	const onTodoTitleChange = (id, newTitle) => {
+		setToDo(toDo.map((t) => (t.id === id ? { ...t, title: newTitle } : t)));
+	};
+
+	// Изменение состояния задачи (выполнено/не выполнено)
+	const onTodoCompletedChange = (id, newCompleted) => {
+		updateTodo({ id, completed: newCompleted }).then(() => {
+			setToDo(toDo.map((t) => (t.id === id ? { ...t, completed: newCompleted } : t)));
+		});
+	};
+
+	// Загрузка задач при изменении поиска или сортировки
 	useEffect(() => {
 		readTodos(searchPhrase, isAlphabetSorting).then((loadedToDo) => setToDo(loadedToDo));
 	}, [searchPhrase, isAlphabetSorting]);
+	// Страница 404 и кнопка На главную
+	const NotFoundPage = () => {
+		const navigate = useNavigate();
+
+		return (
+			<div>
+				<h1>Страница не найдена</h1>
+				<button onClick={() => navigate('/')}>На главную</button>
+			</div>
+		);
+	};
 
 	return (
 		<div className={styles.App}>
-			<ControlPanel
-				onTodoAdd={onTodoAdd}
-				onSearch={setSearchPhrase}
-				onSorting={setIsAlphabetSorting}
-			/>
-			<div>
-				{toDo.map(({ id, title, completed, isEditing = false }) => (
-					<Todo
-						key={id}
-						id={id}
-						title={title}
-						completed={completed}
-						onSave={() => onTodoSave(id)}
-						onEdit={() => onTodoEdit(id)}
-						onRemove={() => onTodoRemove(id)}
-						onTitileChange={(newTitile) => onTodoTitileChange(id, newTitile)}
-						onCompletedChange={(newCompleted) =>
-							onTodoCompletedChange(id, newCompleted)
-						}
-						isEditing={isEditing}
-					/>
-				))}
-			</div>
+			<Routes>
+				{/* Главная страница */}
+				<Route
+					path="/"
+					element={
+						<MainPage
+							toDo={toDo}
+							onTodoAdd={onTodoAdd}
+							setSearchPhrase={setSearchPhrase}
+							setIsAlphabetSorting={setIsAlphabetSorting}
+							onTodoCompletedChange={onTodoCompletedChange}
+						/>
+					}
+				/>
+
+				{/* Страница задачи */}
+				<Route
+					path="/task/:id"
+					element={
+						<TaskPage
+							toDo={toDo}
+							onTodoSave={onTodoSave}
+							onTodoEdit={onTodoEdit}
+							onTodoRemove={onTodoRemove}
+							onTodoTitleChange={onTodoTitleChange}
+							onTodoCompletedChange={onTodoCompletedChange}
+						/>
+					}
+				/>
+
+				{/* Страница 404 */}
+				<Route path="/404" element={<NotFoundPage />} />
+				<Route path="*" element={<Navigate to="/404" replace />} />
+			</Routes>
 		</div>
 	);
 };

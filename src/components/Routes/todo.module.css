@@ -1,0 +1,26 @@
+.todo {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.todoTitle {
+    margin-right: 10px;
+    white-space: nowrap; /* Обрезка текста на главной странице */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1; /* Текст занимает все доступное пространство */
+}
+
+.taskPageTitle {
+    white-space: normal; /* Перенос текста на странице задачи */
+    word-wrap: break-word;
+}
+
+.todoActions {
+    margin-left: 10px; /* Отступ между текстом и кнопкой */
+}

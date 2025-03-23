@@ -1,4 +1,4 @@
-import { METHOD } from '../components/constants/main';
+import { METHOD } from '../components/constants';
 
 const fetchServer = (method, { id, ...payload } = {}) => {
 	let url = `http://localhost:3000/todos`;

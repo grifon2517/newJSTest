@@ -1,7 +1,7 @@
 import styles from './controlPanel.module.css';
 import { Button } from '../button/button';
 import PropTypes from 'prop-types';
-import { Search, Sorting } from './components/main';
+import { Search, Sorting } from './components';
 
 export const ControlPanel = ({ onTodoAdd, onSearch, onSorting }) => {
 	// const [searchPhrase, setSearchPhrase] = useState('');
