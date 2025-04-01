@@ -1,5 +1,5 @@
 import styles from './controlPanel.module.css';
-import { Button } from '../button/button';
+
 import PropTypes from 'prop-types';
 import { Search, Sorting } from './components';
 
@@ -12,7 +12,9 @@ export const ControlPanel = ({ onTodoAdd, onSearch, onSorting }) => {
 			<Search onSearch={onSearch} />
 			<Sorting onSorting={onSorting} />
 
-			<Button onClick={onTodoAdd}>➕</Button>
+			<button onClick={onTodoAdd} className={styles.Button}>
+				➕
+			</button>
 		</div>
 	);
 };

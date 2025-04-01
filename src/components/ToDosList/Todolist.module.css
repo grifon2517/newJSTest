@@ -1,0 +1,46 @@
+.list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+  }
+
+  .listItem {
+	padding: 8px 0;
+	border-bottom: 1px solid #eee;
+  }
+
+  .taskContainer {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+  }
+
+  .checkbox {
+	cursor: pointer;
+	width: 18px;
+	height: 18px;
+  }
+
+  .taskLink {
+	text-decoration: none;
+	color: inherit;
+	flex-grow: 1;
+  }
+
+  .completedTask {
+	text-decoration: line-through;
+	opacity: 0.6;
+  }
+
+  .empty {
+	padding: 16px;
+	text-align: center;
+	color: #666;
+  }
+
+ .todoTitle {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 200px;
+  }
