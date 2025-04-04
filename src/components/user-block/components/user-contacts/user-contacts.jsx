@@ -6,7 +6,7 @@ export const UserContacts = () => {
 
 	return (
 		<div>
-			<h3>Контакты: </h3>
+			<h3>Контакты</h3>
 			<div>Почта: {email}</div>
 			<div>Телефон: {phone}</div>
 		</div>
