@@ -27,7 +27,6 @@ export const Search = ({ onSearch }) => {
 				value={value}
 				onChange={onChange}
 			/>
-			{/* <button type="submit">Поиск</button> */}
 		</form>
 	);
 };

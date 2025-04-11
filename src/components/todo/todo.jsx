@@ -1,57 +1,43 @@
+/* eslint-disable react/prop-types */
 import styles from './todo.module.css';
-import PropTypes from 'prop-types';
-import { Button } from '../button/button';
+// import PropTypes from 'prop-types';
 
-export const Todo = ({
-	title,
-	completed,
-	onSave,
-	onEdit,
-	onRemove,
-	isEditing,
-	onTitileChange,
-	onCompletedChange,
-}) => {
+import { useContext } from 'react';
+import { AppContext } from '../../context';
+
+export const Todo = ({ id, title, completed, isEditing }) => {
+	const { onTodoSave, onTodoEdit, onTodoRemove, onTodoTitleChange, onTodoCompletedChange } =
+		useContext(AppContext);
 	return (
 		<div className={styles.todo}>
 			<input
 				className={styles.checkbox}
 				type="checkbox"
 				checked={completed}
-				onChange={({ target }) => onCompletedChange(target.checked)}
+				onChange={() => onTodoCompletedChange(id, !completed)}
 			/>
 
-			<div className={styles.todoTitle}>
-				{isEditing ? (
-					<input
-						value={title}
-						type="text"
-						onChange={({ target }) => onTitileChange(target.value)}
-					/>
-				) : (
-					<div onClick={onEdit}>{title}</div>
-				)}
-				<></>
-			</div>
+			<ul className={styles.todoTitle}>
+				<li>
+					{isEditing ? (
+						<input
+							value={title}
+							type="text"
+							onChange={(e) => onTodoTitleChange(id, e.target.value)}
+						/>
+					) : (
+						<div onClick={() => onTodoEdit(id)}>{title}</div>
+					)}
+					<></>
+				</li>
+			</ul>
 			<div>
 				{isEditing ? (
-					<Button onClick={onSave}>💾</Button>
+					<button onClick={() => onTodoSave(id)}>💾</button>
 				) : (
-					<Button onClick={onRemove}>🗑️</Button>
+					<button onClick={() => onTodoRemove(id)}>🗑️</button>
 				)}
 			</div>
 		</div>
 	);
-};
-
-Todo.propTypes = {
-	id: PropTypes.number.isRequired, // id должен быть числом и обязательным
-	title: PropTypes.string.isRequired, // title должен быть строкой и обязательным
-	completed: PropTypes.bool.isRequired,
-	onSave: PropTypes.func,
-	onEdit: PropTypes.func,
-	onRemove: PropTypes.func,
-	isEditing: PropTypes.bool,
-	onTitileChange: PropTypes.func,
-	onCompletedChange: PropTypes.func,
 };

@@ -1,24 +1,20 @@
 import styles from './controlPanel.module.css';
-import { Button } from '../button/button';
-import PropTypes from 'prop-types';
-import { Search, Sorting } from './components/main';
 
-export const ControlPanel = ({ onTodoAdd, onSearch, onSorting }) => {
-	// const [searchPhrase, setSearchPhrase] = useState('');
-	// const [isSortingEnabled, setIsSortingEnabled] = useState(false);
+import { Search, Sorting } from './components/main';
+import { useContext } from 'react';
+import { AppContext } from '../../context';
+
+export const ControlPanel = () => {
+	const { onTodoAdd, setSearchPhrase, setIsAlphabetSorting } = useContext(AppContext);
 
 	return (
 		<div className={styles.controlPanel}>
-			<Search onSearch={onSearch} />
-			<Sorting onSorting={onSorting} />
+			<Search onSearch={(value) => setSearchPhrase(value)} />
+			<Sorting onSorting={setIsAlphabetSorting} />
 
-			<Button onClick={onTodoAdd}>➕</Button>
+			<button className={styles.addButton} onClick={onTodoAdd}>
+				➕
+			</button>
 		</div>
 	);
-};
-
-ControlPanel.propTypes = {
-	onTodoAdd: PropTypes.func,
-	onSearch: PropTypes.func,
-	onSorting: PropTypes.func,
 };
