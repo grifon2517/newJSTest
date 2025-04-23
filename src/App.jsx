@@ -1,9 +1,10 @@
 // import ReactLogo from './assets/react.svg?react';
 // import viteLogo from '/vite.svg';
 import { Header, UserBlock } from './components';
-import { useEffect, useReducer } from 'react';
+import { useEffect } from 'react';
 import styles from './app.module.css';
-import { AppContext } from './context';
+
+import { store } from './store';
 
 const getUserFromServer = () => ({
 	id: '1',
@@ -21,47 +22,25 @@ const getAnotherUserFromServer = () => ({
 	phone: '8904241223495',
 });
 
-const reducer = (state, action) => {
-	const { type, payload } = action;
-
-	switch (type) {
-		case 'SET USER DATA': {
-			return payload;
-		}
-		case 'SET USER AGE': {
-			return {
-				...state,
-				age: payload,
-			};
-		}
-		default:
-			return state;
-	}
-};
-
 export const App = () => {
-	const [userData, dispatch] = useReducer(reducer, {});
-
 	useEffect(() => {
 		const userDataFromServer = getUserFromServer();
 
-		dispatch({ type: 'SET-USER-DATA', payload: userDataFromServer });
+		store.dispatch({ type: 'SET_USER_DATA', payload: userDataFromServer });
 	}, []);
 
 	const onUserChange = () => {
 		const anotheruserDataFromServer = getAnotherUserFromServer();
 
-		dispatch({ type: 'SET-USER-DATA', payload: anotheruserDataFromServer });
+		store.dispatch({ type: 'SET_USER_DATA', payload: anotheruserDataFromServer });
 	};
 
 	return (
-		<AppContext.Provider value={{ userData, dispatch }}>
-			<div className={styles.app}>
-				<Header />
-				<hr />
-				<UserBlock />
-				<button onClick={onUserChange}>Сменить пользователя</button>
-			</div>
-		</AppContext.Provider>
+		<div className={styles.app}>
+			<Header />
+			<hr />
+			<UserBlock />
+			<button onClick={onUserChange}>Сменить пользователя</button>
+		</div>
 	);
 };
