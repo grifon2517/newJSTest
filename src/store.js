@@ -1,18 +1,17 @@
-import {appReducer} from './reducer'
-
-const createStore = (reducer) => {
-let state
-
-	return {
-		dispatch: (action) => {
-			state = reducer( state, action)
-			console.log(state)
-		},
-		getState: () => state
-	}
-}
-
-export const store = createStore(appReducer)
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import { thunk } from "redux-thunk";
+import { userReducer, productsReducer } from "./reducers";
 
 
-store.dispatch({})
+const reducer = combineReducers({
+	userState: userReducer,
+	productsState: productsReducer
+})
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export const store = createStore(reducer, composeEnhancers( applyMiddleware(thunk)))
+
+
+
+
